@@ -1,5 +1,6 @@
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
+const employeeRoutes = require('./routes/employeeRoutes');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -19,6 +20,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/emp', employeeRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ message: 'Route not found.' });
