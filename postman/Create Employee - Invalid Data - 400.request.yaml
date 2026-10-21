@@ -1,0 +1,66 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"first_name\": \"\",\r
+
+    \  \"last_name\": \"Taylor\",\r
+
+    \  \"email\": \"not-an-email\",\r
+
+    \  \"position\": \"Developer\",\r
+
+    \  \"salary\": -100,\r
+
+    \  \"date_of_joining\": \"2026-02-30\",\r
+
+    \  \"department\": \"Engineering\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Invalid employee data returns 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Validation identifies all four invalid fields\", function () {\r
+
+      \    const data = pm.response.json();\r
+
+      \r
+
+      \    pm.expect(data.errors).to.be.an(\"array\");\r
+
+      \r
+
+      \    const fields = data.errors.map(error => error.field);\r
+
+      \r
+
+      \    pm.expect(fields).to.include.members([\r
+
+      \        \"first_name\",\r
+
+      \        \"email\",\r
+
+      \        \"salary\",\r
+
+      \        \"date_of_joining\"\r
+
+      \    ]);\r
+
+      });"
+    language: text/javascript
+order: 12000

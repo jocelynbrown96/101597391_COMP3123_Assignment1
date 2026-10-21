@@ -1,0 +1,69 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/user/signup"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"username\": \"{{testUsername}}\",\r
+
+    \  \"email\": \"{{testEmail}}\",\r
+
+    \  \"password\": \"StudyCoffee42!\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Signup returns 201 Created\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains the new user without their password\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      \r
+
+      \    const data = pm.response.json();\r
+
+      \    const submitted = JSON.parse(\r
+
+      \    pm.variables.replaceIn(pm.request.body.raw)\r
+
+      );\r
+
+      \r
+
+      \    pm.expect(data.message).to.equal(\"User registered successfully!\");\r
+
+      \    pm.expect(data.user._id).to.be.a(\"string\").and.not.empty;\r
+
+      \    pm.expect(data.user.username).to.equal(submitted.username);\r
+
+      \    pm.expect(data.user.email).to.equal(submitted.email);\r
+
+      \    pm.expect(data.user).not.to.have.property(\"password\");\r
+
+      });"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const unique = Date.now().toString();\r
+
+      \r
+
+      pm.collectionVariables.set(\"testUsername\", \"test_\" + unique);\r
+
+      pm.collectionVariables.set(\r
+
+      \    \"testEmail\",\r
+
+      \    \"test_\" + unique + \"@example.com\"\r
+
+      );"
+    language: text/javascript
+order: 10000

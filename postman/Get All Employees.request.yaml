@@ -1,0 +1,41 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Employee list returns 200 OK\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response is an array of employees\", function () {\r
+
+      \    const employees = pm.response.json();\r
+
+      \r
+
+      \    pm.expect(employees).to.be.an(\"array\");\r
+
+      \r
+
+      \    employees.forEach(function (employee) {\r
+
+      \        pm.expect(employee).to.have.property(\"_id\");\r
+
+      \        pm.expect(employee).to.have.property(\"first_name\");\r
+
+      \        pm.expect(employee).to.have.property(\"last_name\");\r
+
+      \    });\r
+
+      });"
+    language: text/javascript
+order: 2000

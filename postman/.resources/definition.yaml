@@ -1,0 +1,26 @@
+$kind: collection
+variables:
+  - key: token
+    value: ""
+    disabled: false
+  - key: json_web_token_1812
+    secret: true
+    disabled: false
+  - key: json_web_token_0kes
+    secret: true
+    disabled: false
+  - key: employeeId
+    value: ""
+    disabled: false
+  - key: json_web_token_0agm
+    secret: true
+    disabled: false
+  - key: testUsername
+    value: ""
+    disabled: false
+  - key: testEmail
+    value: ""
+    disabled: false
+  - key: baseUrl
+    value: ""
+    disabled: false

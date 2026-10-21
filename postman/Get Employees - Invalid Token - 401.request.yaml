@@ -1,0 +1,27 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: not-a-valid-token
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Invalid token returns 401 Unauthorized\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response explains that the token is invalid or expired\", function () {\r
+
+      \    pm.expect(pm.response.json().message)\r
+
+      \        .to.equal(\"Invalid or expired token.\");\r
+
+      });"
+    language: text/javascript
+order: 14000

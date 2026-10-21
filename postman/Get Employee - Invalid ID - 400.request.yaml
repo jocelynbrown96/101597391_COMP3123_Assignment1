@@ -1,0 +1,33 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees/not-an-id"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Invalid employee ID returns 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Validation identifies the employee ID field\", function () {\r
+
+      \    const data = pm.response.json();\r
+
+      \r
+
+      \    pm.expect(data.errors).to.be.an(\"array\");\r
+
+      \    pm.expect(data.errors.map(error => error.field))\r
+
+      \        .to.include(\"eid\");\r
+
+      });"
+    language: text/javascript
+order: 15000

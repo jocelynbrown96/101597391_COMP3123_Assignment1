@@ -1,0 +1,23 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees"
+method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Missing token returns 401 Unauthorized\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response explains that a Bearer token is required\", function () {\r
+
+      \    pm.expect(pm.response.json().message)\r
+
+      \        .to.equal(\"A Bearer token is required.\");\r
+
+      });"
+    language: text/javascript
+order: 13000

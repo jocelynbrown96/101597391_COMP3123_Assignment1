@@ -1,0 +1,27 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees/{{employeeId}}"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Deleted employee returns 404\", function () {\r
+
+      \    pm.response.to.have.status(404);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response explains that the employee was not found\", function () {\r
+
+      \    pm.expect(pm.response.json().message)\r
+
+      \        .to.equal(\"Employee not found.\");\r
+
+      });"
+    language: text/javascript
+order: 8000

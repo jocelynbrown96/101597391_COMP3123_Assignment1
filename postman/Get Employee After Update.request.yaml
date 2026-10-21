@@ -1,0 +1,41 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees/{{employeeId}}"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Employee details return 200 OK\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains the requested employee\", function () {\r
+
+      \    const employee = pm.response.json();\r
+
+      \r
+
+      \    pm.expect(employee._id)\r
+
+      \        .to.equal(pm.collectionVariables.get(\"employeeId\"));\r
+
+      \    pm.expect(employee.first_name).to.equal(\"Avery\");\r
+
+      \    pm.expect(employee.last_name).to.equal(\"Taylor\");\r
+
+      \    pm.expect(employee.email).to.equal(\"avery.taylor@example.com\");\r
+
+      \    pm.expect(employee.salary).to.equal(85000);\r
+
+      \    pm.expect(employee.position).to.equal(\"Senior Software Developer\");\r
+
+      });"
+    language: text/javascript
+order: 4319

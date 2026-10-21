@@ -1,0 +1,27 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/emp/employees?eid={{employeeId}}"
+method: DELETE
+queryParams:
+  eid: "{{employeeId}}"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Employee deletion returns 204 No Content\", function () {\r
+
+      \    pm.response.to.have.status(204);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Delete response has no body\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.equal(\"\");\r
+
+      });"
+    language: text/javascript
+order: 7000
